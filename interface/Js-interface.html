@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //定义用于创建接口的匿名构造函数.
+    var Interface = function (name, methods) {//匿名函数
+        if (arguments.length != 2) {
+            throw new Error('定义一个interface需要两个参数');
+        }
+        this.name = name;//接口的名称
+        this.methods = [];
+        for (var i = 0; i < methods.length; i++) {
+            if (typeof methods[i] !== 'string') {//因为要确保interface的方法名都是字符串,这样方便后续的校验
+                throw new Error('方法名称应该是字符串');
+            }
+            this.methods.push(methods[i]);
+        }
+    }
+
+
+    //用于检测接口是否被完整实现的方法,添加到接口的匿名函数对象上.
+    Interface.ensureImplements = function (object) {//这个object就是Js函数的arguments参数只不过换了个名字,用于接收多个参数.
+        if (arguments.length < 2) {
+            throw new Error('arguments at lest 2');
+        }
+
+        for (var i = 1; i < arguments.length; i++) {
+            var interfacetmp = arguments[i];
+            if (interfacetmp.constructor !== Interface) {
+                throw new Error('not Interface');//传入的不是一个接口构造函数的实例
+            }
+            for (j = 0; j < interfacetmp.methods.length; j++) {//检查传入的实例上是否有接口上的方法.
+                var method = interfacetmp.methods[j];
+                if (!object[method] || typeof object[method] != 'function') {//检查interface上的方法是否都被实现,或者实现的方式不对,它不是个方法.
+                    throw new Error(method + '没有实现接口方法');
+                }
+            }
+        }
+    }
+    
+    //定义一个接口
+    var ResultSet = new Interface('ResultSet', ['getDate', 'getResults']);//数组中的参数是接口中的方法名
+
+    //用于实现接口函数的匿名构造函数
+    var resultObject = function () {
+        //检查实现情况
+        Interface.ensureImplements(this, ResultSet);//这个是在实例化对象的时候执行的.
+    }
+    resultObject.prototype.getDate = function () { console.log("getDate called") };//实现接口的方法
+    resultObject.prototype.getResults = function () { console.log("getResults called") };//实现接口的方法
+
+    //这一步其实没什么必要
+    var resultFormatter = function (resultObject) {//手动检查我们定义的匿名构造函数的prototype上是否已经实现了接口的方法.
+        Interface.ensureImplements(resultObject, ResultSet);
+    }
+
+    var test = new resultObject();//实例化构造函数
+    resultFormatter(resultObject.prototype);//手动检查.
+
+    test.getDate()
+</script>
+
+</html>
