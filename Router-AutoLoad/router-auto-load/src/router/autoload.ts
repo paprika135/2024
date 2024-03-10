@@ -3,7 +3,6 @@ import { RouteRecordRaw } from "vue-router";
 const layouts  = import.meta.glob('../layouts/*.vue',{eager:true});
 const views = import.meta.glob('../views/*/*.vue',{eager:true});
 
-console.log(layouts);
 
 
 //生成routes数组
@@ -45,7 +44,8 @@ function getRouteByModule(file:string,module:{[key:string]:any}):RouteRecordRaw{
         path:`/${path}`,
         component:module.default
     } 
-    return route;
+    //如果组件有自定义义路由信息，我们需要使用Object.assign()合并
+    return module.default.route ? Object.assign(route,module.default.route) : route;
 }
 
 export default getRoutes

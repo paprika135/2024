@@ -4,8 +4,12 @@
     </div>
 </template>
 
-<script setup lang="ts">
-
+<script lang="ts">
+export default {
+    route:{
+        meta:{auth:true}
+    }
+}
 </script>
 
 <style scoped>

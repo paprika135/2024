@@ -1,6 +1,7 @@
 import { App } from "vue";
 import { createRouter,createWebHistory } from "vue-router";
 import routes from './routes'
+console.log(routes);
 
 
 const router = createRouter({
