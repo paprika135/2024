@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <template id="tp">
+        <div class="hello">hello,<slot name="weizhu"></slot></div>
+    </template>
+    <w-z>
+        <span slot="weizhu">Weizhu</span>
+    </w-z>
+    <script type="text/javascript">
+        class Weizhu extends HTMLElement{
+            constructor(){
+                super();
+                const shadow = this.attachShadow({mode:"open"});//开启一个shadowDOM tree
+                const templateDOM = document.getElementById('tp');
+                //深度clone template标签中的内容，因为定义好template标签的内容可能在其它component中也会用。
+                const cloneTemplate = templateDOM.content.cloneNode(true);
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    div.hello{
+                        color:red;
+                        font-size:32px;
+                    }
+                `
+                this.shadowRoot.appendChild(style);
+                this.shadowRoot.appendChild(cloneTemplate);
+            }
+        }
+        window.customElements.define('w-z',Weizhu);
+    </script>
+</body>
+</html>

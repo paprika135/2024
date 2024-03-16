@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet">
+    <title>Vite App</title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <template id="newItems">
+        <div class="t-box">
+          <div class="img-box">
+            <img src="" class="img-responsive" alt="Image">
+          </div>
+          <div class="title-box">
+            <span class="title-content"></span>
+            <div class="tag">
+              <span class="author"></span><span class="time"></span>
+            </div>
+          </div>
+        </div>
+        <div class="b-box">
+          <p class="content"></p>
+          <div class="b-box-botton">
+            <a href="#">like</a><a href="#">comments</a><a href="#">shared</a>
+          </div>
+        </div>
+    </template>
+    <template id="newsList">
+      <div class="list-container">
+        <slot name="renderItem" class="itemContent"></slot>
+      </div>
+    </template>
+
+
+    <!-- <div class="news">
+      <news-list id="newslist">
+        <news-items slot="renderItem"></news-items>
+      </news-list>
+    </div> -->
+    
+    <div class="news">
+      <news-list id="newslist">
+        <news-items slot="renderItem"></news-items>
+      </news-list>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
